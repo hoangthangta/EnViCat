@@ -1,5 +1,7 @@
 # Introduction
 
+This repo is to translate Wikipedia categories from English to Vietnamese.
+
 # Models
 * Helsinki-NLP/opus-mt-en-vi
 * mbart
