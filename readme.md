@@ -7,11 +7,11 @@ Split the dataset randomly by a ratio 8:1:1, by this command:
 python split_dataset.py
 
 # Models
-* Helsinki-NLP/opus-mt-en-vi
+* Helsinki-NLP/opus-mt-en-vi (https://github.com/Helsinki-NLP/Opus-MT, https://marian-nmt.github.io/)
 * VietAI/envit5-translation (https://huggingface.co/VietAI/envit5-translation)
-* mbart
-* mt5
-* facebook/m2m100_418M
+* mbart (https://huggingface.co/docs/transformers/model_doc/mbart, https://arxiv.org/abs/2001.08210)
+* mt5 (https://huggingface.co/google/mt5-base, https://arxiv.org/abs/2010.11934)
+* facebook/m2m100_418M (https://huggingface.co/facebook/m2m100_418M, https://arxiv.org/abs/2010.11125)
 
 # Train models
 
