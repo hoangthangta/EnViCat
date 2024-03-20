@@ -15,6 +15,10 @@ python split_dataset.py
 
 # Train models
 
+### Naive Seq2seq
+
+...writing code...
+
 ### Helsinki-NLP/opus-mt-en-vi
 
 python seq2seq.py --mode "train" --model_name "Helsinki-NLP/opus-mt-en-vi" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 3 --batch_size 4 --max_source_length 32 --source_prefix ""
