@@ -34,10 +34,10 @@ python seq2seq.py --mode "train" --model_name "google/mt5-base" --train_path "da
 
 python seq2seq.py --mode "test" --model_name "google/mt5-base" --model_path "google_mt5-base\checkpoint-xxx" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix "summarize: "
 
-### facebook/m2m100_418M (language code errors)
+### facebook/m2m100_418M
 python seq2seq.py --mode "train" --model_name "facebook/m2m100_418M" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 3 --batch_size 4 --max_source_length 32 --source_prefix ""
 
-python seq2seq.py --mode "test" --model_name "facebook/m2m100_418M" --model_path "facebook_m2m100_418M\checkpoint-xxx" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix ""
+python seq2seq.py --mode "test" --model_name "facebook/m2m100_418M" --model_path "m2m100_418M\checkpoint-xxx" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix ""
 
 # Contact
 * tahoangthang@gmail.com
