@@ -1,6 +1,11 @@
 # Introduction
 This repo is to translate Wikipedia categories from English to Vietnamese.
 
+# Split dataset
+Split the dataset randomly by a ratio 8:1:1, by this command:
+
+python split_dataset.py
+
 # Models
 * Helsinki-NLP/opus-mt-en-vi
 * VietAI/envit5-translation (https://huggingface.co/VietAI/envit5-translation)
