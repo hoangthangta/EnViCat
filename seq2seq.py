@@ -114,6 +114,9 @@ def train(train_set, val_set, test_set, tokenizer, model, model_name = 'facebook
     train_df = pd.DataFrame(train_set)
     val_df = pd.DataFrame(val_set)
     test_df = pd.DataFrame(test_set)
+    
+    '''if ('m2m100' in model_name):
+        tokenizer.src_lang = "en"'''
 
     # The maximum total input sequence length after tokenization. 
     # Sequences longer than this will be truncated, sequences shorter will be padded.
@@ -156,6 +159,10 @@ def train(train_set, val_set, test_set, tokenizer, model, model_name = 'facebook
     except:
         repository_id = f"{model_name}"
 
+    # fp16
+    fp16_value = False 
+    if (torch.cuda.is_available() == True and 't5' not in model_name): fp16_value = True
+    
     # Define training args
     training_args = Seq2SeqTrainingArguments(
         gradient_accumulation_steps = 4,
@@ -164,7 +171,7 @@ def train(train_set, val_set, test_set, tokenizer, model, model_name = 'facebook
         per_device_train_batch_size=batch_size,
         per_device_eval_batch_size=batch_size,
         predict_with_generate=True,
-        #fp16=True, # Overflows with fp16
+        fp16 = fp16_value,  # "cuda" device only
         #learning_rate=3e-4,
         num_train_epochs=epochs,
         # logging & evaluation strategies
@@ -280,6 +287,8 @@ def main(args):
         model = AutoModelForSeq2SeqLM.from_pretrained(args.model_name)
         model.to(device)
         
+
+        
         train(train_set, val_set, test_set, tokenizer, model, model_name = args.model_name, max_source_length = args.max_source_length, max_target_length = args.max_target_length, epochs = args.epochs, batch_size = args.batch_size)
     
     elif (args.mode == 'test'):
@@ -312,7 +321,13 @@ if __name__ == "__main__":
     global source_prefix # set global variable
     source_prefix = args.source_prefix
     global tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(args.model_name, do_lower_case = False, add_prefix_space = True)
+    
+    if ('m2m100' in args.model_name):
+        tokenizer = AutoTokenizer.from_pretrained(args.model_name, do_lower_case = False, add_prefix_space = True, src_lang='en', tgt_lang='vi')
+    elif ('mbart' in args.model_name):
+         tokenizer = AutoTokenizer.from_pretrained(args.model_name, do_lower_case = False, add_prefix_space = True, src_lang='en_XX', tgt_lang='vi_VN')
+    else:
+        tokenizer = AutoTokenizer.from_pretrained(args.model_name, do_lower_case = False, add_prefix_space = True)
     
     global max_source_length
     max_source_length = args.max_source_length
