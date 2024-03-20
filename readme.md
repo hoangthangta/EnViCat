@@ -4,10 +4,10 @@ This repo is to translate Wikipedia categories from English to Vietnamese.
 
 # Models
 * Helsinki-NLP/opus-mt-en-vi
+*  VietAI/envit5-translation (https://huggingface.co/VietAI/envit5-translation)
 * mbart
 * mt5
 * facebook/m2m100_418M
-* VietAI/envit5-translation (https://huggingface.co/VietAI/envit5-translation)
 
 
 # Train models
@@ -24,13 +24,13 @@ python seq2seq.py --mode "train" --model_name "VietAI/envit5-translation" --trai
 
 python seq2seq.py --mode "test" --model_name "VietAI/envit5-translation" --model_path "envit5-translation\checkpoint-xxx" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix ""
 
-### google/mt5-base (bad results)
+### google/mt5-base (bad results, needed to test again)
 
 python seq2seq.py --mode "train" --model_name "google/mt5-base" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 3 --batch_size 4 --max_source_length 32 --source_prefix "summarize: "
 
 python seq2seq.py --mode "test" --model_name "google/mt5-base" --model_path "google_mt5-base\checkpoint-xxx" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix "summarize: "
 
-### facebook/m2m100_418M (language code)
+### facebook/m2m100_418M (language code errors)
 python seq2seq.py --mode "train" --model_name "facebook/m2m100_418M" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 3 --batch_size 4 --max_source_length 32 --source_prefix ""
 
 python seq2seq.py --mode "test" --model_name "facebook/m2m100_418M" --model_path "facebook_m2m100_418M\checkpoint-xxx" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix ""
