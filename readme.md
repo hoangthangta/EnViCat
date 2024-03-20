@@ -1,6 +1,12 @@
 # Introduction
 This repo is to translate Wikipedia categories from English to Vietnamese.
 
+# Collect data
+
+Collect categories randomly:
+
+python collect_data.py
+
 # Split dataset
 Split the dataset randomly by a ratio 8:1:1, by this command:
 
