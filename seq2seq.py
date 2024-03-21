@@ -29,17 +29,16 @@ rouge = evaluate.load("rouge")
 
 def preprocess_function(sample, padding="max_length"):
     
-    # Add prefix to the input for t5
-    inputs = [source_prefix + item for item in sample["source"]]
-    
+    # Add prefix for T5 models
+   
+    inputs = [source_prefix + item for item in sample[source_column]]
     print('inputs: ', inputs[0])
 
     # Tokenize inputs
     model_inputs = tokenizer(inputs, max_length=max_source_length, padding=padding, truncation=True)
     
     # Tokenize labels
-    #sample["target"] = [str(x) for x in sample["target"]]
-    labels = tokenizer(text_target=sample["target"], max_length=max_target_length, padding=padding, truncation=True)
+    labels = tokenizer(text_target=sample[target_column], max_length=max_target_length, padding=padding, truncation=True)
     
     # If we are padding here, replace all tokenizer.pad_token_id in the labels by -100 when we want to ignore
     # padding in the loss. 
@@ -120,16 +119,16 @@ def train(train_set, val_set, test_set, tokenizer, model, model_name = 'facebook
 
     # The maximum total input sequence length after tokenization. 
     # Sequences longer than this will be truncated, sequences shorter will be padded.
-    tokenized_inputs = concatenate_datasets([train_set, test_set]).map(lambda x: tokenizer(x[source_column], truncation=True), batched=True, remove_columns=train_set.column_names)
-    print(f"Max source length: {max_source_length}")
+    #tokenized_inputs = concatenate_datasets([train_set, test_set]).map(lambda x: tokenizer(x[source_column], truncation=True), batched=True, remove_columns=train_set.column_names)
+    #print(f"Max source length: {max_source_length}")
 
     # The maximum total sequence length for target text after tokenization. 
     # Sequences longer than this will be truncated, sequences shorter will be padded."
-    tokenized_targets = concatenate_datasets([train_set, test_set]).map(lambda x: tokenizer(x[target_column], truncation=True), batched=True, remove_columns=train_set.column_names)
+    #tokenized_targets = concatenate_datasets([train_set, test_set]).map(lambda x: tokenizer(x[target_column], truncation=True), batched=True, remove_columns=train_set.column_names)
     #max_target_length = max([len(str(x)) for x in tokenized_targets["input_ids"]])
 
-    print('Tokenized targets: ', tokenized_targets)
-    print(f"Max target length: {max_target_length}")
+    #print('Tokenized targets: ', tokenized_targets)
+    #print(f"Max target length: {max_target_length}")
 
     tokenized_train_dataset = train_set.map(preprocess_function, batched=True, remove_columns=train_set.column_names)
     print(f"Keys of tokenized dataset: {list(tokenized_train_dataset.features)}")
@@ -312,22 +311,30 @@ if __name__ == "__main__":
     parser.add_argument('--min_target_length', type=int, default=1)
     parser.add_argument('--model_path', type=str, default='bart-base\checkpoint-xxx')
     parser.add_argument('--source_prefix', type=str, default='summarize: ') # only for T5 models
-    
     parser.add_argument('--source_column', type=str, default='source') 
     parser.add_argument('--target_column', type=str, default='target') 
     
     args = parser.parse_args()
     
-    global source_prefix # set global variable
+    global source_prefix
     source_prefix = args.source_prefix
-    global tokenizer
     
+    #global model_name
+    #model_name = args.model_name
+    
+    global tokenizer
     if ('m2m100' in args.model_name):
         tokenizer = AutoTokenizer.from_pretrained(args.model_name, do_lower_case = False, add_prefix_space = True, src_lang='en', tgt_lang='vi')
     elif ('mbart' in args.model_name):
          tokenizer = AutoTokenizer.from_pretrained(args.model_name, do_lower_case = False, add_prefix_space = True, src_lang='en_XX', tgt_lang='vi_VN')
     else:
         tokenizer = AutoTokenizer.from_pretrained(args.model_name, do_lower_case = False, add_prefix_space = True)
+    
+    global source_column
+    source_column = args.source_column
+    
+    global target_column
+    target_column = args.target_column
     
     global max_source_length
     max_source_length = args.max_source_length
