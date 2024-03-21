@@ -1,3 +1,7 @@
+# 0. Papers
+* ICT 2024, https://ict2024.blu.edu.vn/
+* https://www.sciencedirect.com/journal/natural-language-processing-journal
+  
 # 1. Introduction
 This repo is to translate Wikipedia categories from English to Vietnamese.
 
