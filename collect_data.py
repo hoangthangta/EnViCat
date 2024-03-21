@@ -68,8 +68,8 @@ def collect_single(output_file = 'dataset/collected_data.json'):
         # break conditions
         if (en_cat != '' and vi_cat != '' and 'Category:' in en_cat):
             result_dict['wikidata_id'] = item_dict['wikidata_id']
-            result_dict['source'] = en_cat
-            result_dict['target'] = vi_cat
+            result_dict['source'] = en_cat.replace('Category:','')
+            result_dict['target'] = vi_cat.replace('Thể loại:','')
             break
         
         write_index(wikidata_id) # write index
