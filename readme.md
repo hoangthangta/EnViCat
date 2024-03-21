@@ -1,33 +1,38 @@
-# Introduction
+# 1. Introduction
 This repo is to translate Wikipedia categories from English to Vietnamese.
 
-# Collect data
+# 2. Collect data
 
-## Collect categories randomly
+## 2a. Collect categories randomly
 python collect_data.py
 
-## Scan all data
+## 2b. Scan all data
 ...writing...
 
-# Split dataset
+# 3. Split dataset
 Split the dataset randomly by a ratio 8:1:1, by this command:
 
 python split_dataset.py
 
-# Models
+# 4. Dataset analyses
+...writing...
+
+# 5. Methods
+
+## 5a. Naive Seq2seq
+
+...writing code...
+
+## 5b. Transformer pretrained models
+
+### Models
 * Helsinki-NLP/opus-mt-en-vi (https://github.com/Helsinki-NLP/Opus-MT, https://marian-nmt.github.io/)
 * VietAI/envit5-translation (https://huggingface.co/VietAI/envit5-translation)
 * mbart (https://huggingface.co/docs/transformers/model_doc/mbart, https://arxiv.org/abs/2001.08210)
 * mt5 (https://huggingface.co/google/mt5-base, https://arxiv.org/abs/2010.11934)
 * facebook/m2m100_418M (https://huggingface.co/facebook/m2m100_418M, https://arxiv.org/abs/2010.11125)
 
-# Methods
-
-## Naive Seq2seq
-
-...writing code...
-
-## Transformer
+### Parameters
 Here is the list of training parameters:
 * *mode*: train/test/generate
 * *epochs*: the number of epochs
@@ -68,6 +73,6 @@ python seq2seq.py --mode "train" --model_name "google/mt5-base" --train_path "da
 
 python seq2seq.py --mode "test" --model_name "google/mt5-base" --model_path "google_mt5-base\checkpoint-xxx" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix "summarize: " --source_column "source" --target_column "target"
 
-# Contact
+# 6. Contact
 * tahoangthang@gmail.com
 * https://www.tahoangthang.com
