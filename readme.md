@@ -56,7 +56,7 @@ python seq2seq.py --mode "train" --model_name "google-t5/t5-small" --train_path 
 python seq2seq.py --mode "test" --model_name "google-t5/t5-small" --model_path "google-t5_t5-small\checkpoint-xxx" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix "" --source_column "source" --target_column "target" --decode_pred 1
 
 #### Without prefix
-python seq2seq.py --mode "train" --model_name "google-t5/t5-small" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 3 --batch_size 4 --max_source_length 32 --source_prefix "summarize: " --source_column "source" --target_column "target_encoded"
+python seq2seq.py --mode "train" --model_name "google-t5/t5-small" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 3 --batch_size 4 --max_source_length 32 --source_prefix "" --source_column "source" --target_column "target_encoded"
 
 python seq2seq.py --mode "test" --model_name "google-t5/t5-small" --model_path "google-t5_t5-small\checkpoint-xxx" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix "" --source_column "source" --target_column "target" --decode_pred 1
 
@@ -68,14 +68,14 @@ python seq2seq.py --mode "train" --model_name "google-t5/t5-base" --train_path "
 python seq2seq.py --mode "test" --model_name "google-t5/t5-base" --model_path "google-t5_t5-base\checkpoint-xxx" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix "" --source_column "source" --target_column "target" --decode_pred 1
 
 #### Without prefix
-python seq2seq.py --mode "train" --model_name "google-t5/t5-base" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 3 --batch_size 4 --max_source_length 32 --source_prefix "summarize: " --source_column "source" --target_column "target_encoded"
+python seq2seq.py --mode "train" --model_name "google-t5/t5-base" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 3 --batch_size 4 --max_source_length 32 --source_prefix "" --source_column "source" --target_column "target_encoded"
 
 python seq2seq.py --mode "test" --model_name "google-t5/t5-base" --model_path "google-t5_t5-base\checkpoint-xxx" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix "" --source_column "source" --target_column "target" --decode_pred 1
 
 ### facebook/bart-base
-python seq2seq.py --mode "train" --model_name "facebook/bart-base" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 3 --batch_size 4 --max_source_length 32 --source_prefix "summarize: " --source_column "source" --target_column "target_encoded"
+python seq2seq.py --mode "train" --model_name "facebook/bart-base" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 3 --batch_size 4 --max_source_length 32 --source_prefix "" --source_column "source" --target_column "target_encoded"
 
-python seq2seq.py --mode "test" --model_name "facebook/bart-base" --model_path "facebook_bart-base\checkpoint-xxx" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix "summarize: " --source_column "source" --target_column "target" --decode_pred 1
+python seq2seq.py --mode "test" --model_name "facebook/bart-base" --model_path "facebook_bart-base\checkpoint-xxx" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix "" --source_column "source" --target_column "target" --decode_pred 1
 
 ### Helsinki-NLP/opus-mt-en-vi
 python seq2seq.py --mode "train" --model_name "Helsinki-NLP/opus-mt-en-vi" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 3 --batch_size 4 --max_source_length 32 --source_prefix "" --source_column "source" --target_column "target"
