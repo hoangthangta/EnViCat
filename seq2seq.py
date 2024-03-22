@@ -277,7 +277,6 @@ def test(dataset, model_name, model, tokenizer, input_file = 'dataset/test.json'
     for item, pred in zip(dataset, pred_list):
         item['prediction'] =  pred
     
-    
     repository_id = ''
     try:
         repository_id = f"{model_name.split('/')[1]}"
