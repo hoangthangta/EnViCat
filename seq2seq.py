@@ -54,7 +54,9 @@ def preprocess_function(sample, padding="max_length"):
 # helper function to postprocess text
 def postprocess_text(preds, labels):
 
+    print('-----------------------')
     print('labels: ', labels[0])
+    print('preds: ', preds[0])
     preds = [pred.strip() for pred in preds]
     labels = [label.strip() for label in labels]
 
@@ -274,7 +276,16 @@ def test(dataset, model_name, model, tokenizer, input_file = 'dataset/test.json'
     # Write predictions to file
     for item, pred in zip(dataset, pred_list):
         item['prediction'] =  pred
-    write_list_to_jsonl_file('dataset/test_pred.json', dataset, 'w')
+    
+    
+    repository_id = ''
+    try:
+        repository_id = f"{model_name.split('/')[1]}"
+    except:
+        repository_id = f"{model_name}"
+        
+    dataset.append(result)
+    write_list_to_jsonl_file('dataset/test_pred_' + repository_id + '.json', dataset, 'w')
         
     print('result: ', result)
     return result
@@ -357,3 +368,5 @@ if __name__ == "__main__":
 # python seq2seq.py --mode "train" --model_name "Helsinki-NLP/opus-mt-en-vi" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 3 --batch_size 4 --max_source_length 16 --source_prefix "" --source_column "source" --target_column "target"
 # python seq2seq.py --mode "test" --model_name "Helsinki-NLP/opus-mt-en-vi" --model_path "opus-mt-en-vi\checkpoint-1738" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix "" --source_column "source" --target_column "target"
         
+# python seq2seq.py --mode "train" --model_name "google-t5/t5-base" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 3 --batch_size 4 --max_source_length 32 --source_prefix "summarize: " --source_column "source" --target_column "target_encoded"        
+# python seq2seq.py --mode "test" --model_name "google-t5/t5-base" --model_path "t5-base\checkpoint-2250" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix "summarize: " --source_column "source" --target_column "target" --decode_pred 1
