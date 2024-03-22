@@ -11,6 +11,8 @@ import random
 import re
 import torch
 
+from prettytable import PrettyTable
+
 from datasets import Dataset, load_dataset, concatenate_datasets
 from file_io import *
 from huggingface_hub import HfFolder
@@ -207,6 +209,19 @@ def train(train_set, val_set, test_set, tokenizer, model, model_name = 'facebook
     trainer.train()
     trainer.evaluate()
 
+def count_parameters(model):
+    table = PrettyTable(["Modules", "Parameters"])
+    total_params = 0
+    for name, parameter in model.named_parameters():
+        if not parameter.requires_grad:
+            continue
+        params = parameter.numel()
+        table.add_row([name, params])
+        total_params += params
+    print(table)
+    print(f"Total Trainable Params: {total_params}")
+    return total_params
+    
 def test(dataset, model_name, model, tokenizer, input_file = 'dataset/test.json', \
                      batch_size = 4, max_len = 32, min_len = 1, source_column = 'source', target_column = 'target', decode_pred = False):
 
@@ -283,10 +298,12 @@ def test(dataset, model_name, model, tokenizer, input_file = 'dataset/test.json'
     except:
         repository_id = f"{model_name}"
         
-    dataset.append(result)
+    dataset.append({'test_results':result})
+    dataset.append({'trainable_params':count_parameters(model)})
+    
     write_list_to_jsonl_file('dataset/test_pred_' + repository_id + '.json', dataset, 'w')
         
-    print('result: ', result)
+    print('Test results: ', result)
     return result
 
 def main(args):
@@ -312,6 +329,7 @@ def main(args):
         decode_pred = (args.decode_pred == 1)
         
         test([], args.model_name, model, tokenizer, input_file = args.test_path, batch_size = args.test_batch_size, max_len = args.max_source_length, min_len = args.min_target_length, decode_pred = decode_pred)
+
 
 #...............................................................................            
 if __name__ == "__main__":
@@ -369,3 +387,8 @@ if __name__ == "__main__":
         
 # python seq2seq.py --mode "train" --model_name "google-t5/t5-base" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 3 --batch_size 4 --max_source_length 32 --source_prefix "summarize: " --source_column "source" --target_column "target_encoded"        
 # python seq2seq.py --mode "test" --model_name "google-t5/t5-base" --model_path "t5-base\checkpoint-2250" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix "summarize: " --source_column "source" --target_column "target" --decode_pred 1
+
+
+# python seq2seq.py --mode "train" --model_name "google-t5/t5-small" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 3 --batch_size 4 --max_source_length 32 --source_prefix "summarize: " --source_column "source" --target_column "target_encoded"   
+     
+# python seq2seq.py --mode "test" --model_name "google-t5/t5-small" --model_path "t5-small\checkpoint-2250" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix "summarize: " --source_column "source" --target_column "target" --decode_pred 1
