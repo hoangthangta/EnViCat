@@ -47,6 +47,7 @@ Here is the list of training parameters:
 * *train_path, val_path, test_path*: URLs of training, validation, and test files
 * *source_prefix*: helpful for T5 models. 
 * *source_column, target_column*: specify the fields of input and output in the training, validation, and test sets
+* *decode_pred*: decode predictions back to Vietnamese (see utils.py)
 
 ### t5-base
 python seq2seq.py --mode "train" --model_name "t5-base" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 3 --batch_size 4 --max_source_length 32 --source_prefix "summarize: " --source_column "source" --target_column "target_encoded"
