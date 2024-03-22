@@ -48,6 +48,16 @@ Here is the list of training parameters:
 * *source_prefix*: helpful for T5 models. 
 * *source_column, target_column*: specify the fields of input and output in the training, validation, and test sets
 
+### t5-base
+python seq2seq.py --mode "train" --model_name "t5-base" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 3 --batch_size 4 --max_source_length 32 --source_prefix "summarize: " --source_column "source" --target_column "target_encoded"
+
+python seq2seq.py --mode "test" --model_name "t5-base" --model_path "t5-base\checkpoint-xxx" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix "summarize: " --source_column "source" --target_column "target" --decode_pred 1
+
+### facebook/bart-base
+python seq2seq.py --mode "train" --model_name "facebook/bart-base" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 3 --batch_size 4 --max_source_length 32 --source_prefix "summarize: " --source_column "source" --target_column "target_encoded"
+
+python seq2seq.py --mode "test" --model_name "facebook/bart-base" --model_path "facebook_bart-base\checkpoint-xxx" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix "summarize: " --source_column "source" --target_column "target" --decode_pred 1
+
 ### Helsinki-NLP/opus-mt-en-vi
 
 python seq2seq.py --mode "train" --model_name "Helsinki-NLP/opus-mt-en-vi" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 3 --batch_size 4 --max_source_length 32 --source_prefix "" --source_column "source" --target_column "target"
