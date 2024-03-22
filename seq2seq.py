@@ -18,6 +18,7 @@ from nltk.tokenize import sent_tokenize
 from sklearn.metrics import f1_score, recall_score, precision_score
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, DataCollatorForSeq2Seq
 from transformers import Seq2SeqTrainer, Seq2SeqTrainingArguments
+from utils import *
 
 nltk.download("punkt")
 device = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
@@ -205,7 +206,7 @@ def train(train_set, val_set, test_set, tokenizer, model, model_name = 'facebook
     trainer.evaluate()
 
 def test(dataset, model_name, model, tokenizer, input_file = 'dataset/test.json', \
-                     batch_size = 4, max_len = 32, min_len = 1, source_column = 'source', target_column = 'target'):
+                     batch_size = 4, max_len = 32, min_len = 1, source_column = 'source', target_column = 'target', decode_pred = False):
 
     
     if (len(dataset) == 0): # load dataset if not given
@@ -233,6 +234,7 @@ def test(dataset, model_name, model, tokenizer, input_file = 'dataset/test.json'
                            
         outputs = []
         with torch.no_grad():
+            # use greedy algorithm
             outputs = model.generate(**inputs, max_length = max_len, min_length = min_len, \
                                          num_beams = 4, do_sample = False, return_dict_in_generate = True, output_scores = True)  
 
@@ -243,6 +245,10 @@ def test(dataset, model_name, model, tokenizer, input_file = 'dataset/test.json'
 
     pred_list = [[x for x in pred][0].strip() for pred in pred_list] # use strip() to remove spaces
     label_list = [item[target_column] for item in dataset]
+
+    # decode prediction
+    if (decode_pred == True):
+        pred_list = [decode_vi(pred) for pred in pred_list]
     
     # Use simple post-processing
     decoded_preds, decoded_labels = postprocess_text(pred_list, label_list)
@@ -292,7 +298,10 @@ def main(args):
         model = AutoModelForSeq2SeqLM.from_pretrained(args.model_path)
         model.to(device)
         model.eval()
-        test([], args.model_name, model, tokenizer, input_file = args.test_path, batch_size = args.test_batch_size, max_len = args.max_source_length, min_len = args.min_target_length)
+        
+        decode_pred = (args.decode_pred == 1)
+        
+        test([], args.model_name, model, tokenizer, input_file = args.test_path, batch_size = args.test_batch_size, max_len = args.max_source_length, min_len = args.min_target_length, decode_pred = decode_pred)
 
 #...............................................................................            
 if __name__ == "__main__":
@@ -313,6 +322,7 @@ if __name__ == "__main__":
     parser.add_argument('--source_prefix', type=str, default='summarize: ') # only for T5 models
     parser.add_argument('--source_column', type=str, default='source') 
     parser.add_argument('--target_column', type=str, default='target') 
+    parser.add_argument('--decode_pred', type=int, default=0) 
     
     args = parser.parse_args()
     
@@ -344,6 +354,6 @@ if __name__ == "__main__":
     
     main(args)
     
-# python seq2seq.py --mode "train" --model_name "Helsinki-NLP/opus-mt-en-vi" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 10 --batch_size 4 --max_source_length 16 --source_prefix "" --source_column "source" --target_column "target"
-# python seq2seq.py --mode "test" --model_name "Helsinki-NLP/opus-mt-en-vi" --model_path "opus-mt-en-vi\checkpoint-1738" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix "" --source_column "source" --target_column "target"
+# python seq2seq.py --mode "train" --model_name "Helsinki-NLP/opus-mt-en-vi" --train_path "dataset/train.json" --val_path "dataset/val.json" --test_path "dataset/test.json" --epochs 3 --batch_size 4 --max_source_length 16 --source_prefix "" --source_column "source" --target_column "target_encoded"
+# python seq2seq.py --mode "test" --model_name "Helsinki-NLP/opus-mt-en-vi" --model_path "opus-mt-en-vi\checkpoint-1738" --test_path "dataset/test.json" --test_batch_size 4 --max_source_length 32 --min_target_length 1 --source_prefix "" --source_column "source" --target_column "target" --decode_pred 1
         
