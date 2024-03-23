@@ -20,6 +20,9 @@ python split_dataset.py
 
 # 4. Dataset analyses
 ...writing...
+* Length of source, target (tokens, spaCy)
+* The number of vocabularies
+* Classify categories by topics
 
 # 5. Methods
 
