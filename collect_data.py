@@ -1,5 +1,10 @@
+
+from utils import *
+
 from wiki_core import *
 from file_io import *
+
+from utils import *
 
 import gc
 import re
@@ -70,6 +75,7 @@ def collect_single(output_file = 'dataset/collected_data.json'):
             result_dict['wikidata_id'] = item_dict['wikidata_id']
             result_dict['source'] = en_cat.replace('Category:','')
             result_dict['target'] = vi_cat.replace('Thể loại:','')
+            result_dict['target_encoded'] = encode_vi(result_dict['target'])
             break
         
         write_index(wikidata_id) # write index
