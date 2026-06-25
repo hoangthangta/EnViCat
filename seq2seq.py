@@ -15,7 +15,7 @@ from prettytable import PrettyTable
 
 from datasets import Dataset, load_dataset, concatenate_datasets
 from file_io import *
-from huggingface_hub import HfFolder
+from huggingface_hub import login, logout, get_token
 from nltk.tokenize import sent_tokenize
 from sklearn.metrics import f1_score, recall_score, precision_score
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, DataCollatorForSeq2Seq
@@ -182,7 +182,7 @@ def train(train_set, val_set, test_set, tokenizer, model, model_name = 'facebook
         logging_dir=f"{repository_id}/logs",
         logging_strategy="epoch", 
         # logging_steps=1000,
-        evaluation_strategy="epoch",
+        eval_strategy="epoch",
         save_strategy="epoch",
         save_total_limit=1,
         load_best_model_at_end=False,
@@ -193,7 +193,7 @@ def train(train_set, val_set, test_set, tokenizer, model, model_name = 'facebook
         #push_to_hub=True,
         #hub_strategy="every_save",
         #hub_model_name=repository_id,
-        #hub_token=HfFolder.get_token(),
+        hub_token=get_token(),
         )
 
     # Create Trainer instance
